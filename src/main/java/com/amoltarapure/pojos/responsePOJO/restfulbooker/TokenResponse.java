@@ -1,4 +1,17 @@
 package com.amoltarapure.pojos.responsePOJO.restfulbooker;
 
-public class TokenResponse {
+public class TokenResponse
+{
+    private String token;
+
+    public String getToken()
+    {
+        return token;
+    }
+
+    public void setToken(String token)
+    {
+        this.token = token;
+    }
+
 }

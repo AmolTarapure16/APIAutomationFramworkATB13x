@@ -1,4 +1,6 @@
 package com.amoltarapure.tests.vwo;
 
-public class TestVWOLoginInvalid {
+public class TestVWOLoginInvalid
+{
+
 }
