@@ -2,8 +2,10 @@ package com.amoltarapure.base;
 
 import com.amoltarapure.asserts.AssertActions;
 import com.amoltarapure.endpoints.APIConstants;
-import com.amoltarapure.modules.PayloadManager;
+import com.amoltarapure.modules.restfulbooker.PayloadManager;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
@@ -46,8 +48,22 @@ public class BaseTest
     }
 
     @AfterTest
-    public void tearDown() {
+    public void tearDown()
+    {
         System.out.println("Finished the Test!");
+    }
+
+    public  String getToken(){
+        requestSpecification = RestAssured.given();
+        requestSpecification.baseUri(APIConstants.BASE_URL)
+                .basePath(APIConstants.AUTH_URL);
+        // Setting the payload
+        String payload = payloadManager.setAuthPayload();
+        // Get the Token
+        response = requestSpecification.contentType(ContentType.JSON).body(payload).when().post();
+        String token = payloadManager.getTokenFromJSON(response.asString());
+        return token;
+
     }
 
 }

@@ -1,8 +1,11 @@
-package com.amoltarapure.modules;
+package com.amoltarapure.modules.restfulbooker;
 
+import com.amoltarapure.pojos.requestPOJO.restfulbooker.Auth;
 import com.amoltarapure.pojos.requestPOJO.restfulbooker.Booking;
 import com.amoltarapure.pojos.requestPOJO.restfulbooker.BookingDates;
 import com.amoltarapure.pojos.responsePOJO.restfulbooker.BookingResponse;
+import com.amoltarapure.pojos.responsePOJO.restfulbooker.InvalidTokenResponse;
+import com.amoltarapure.pojos.responsePOJO.restfulbooker.TokenResponse;
 import com.github.javafaker.Faker;
 import com.google.gson.Gson;
 
@@ -16,21 +19,22 @@ public class PayloadManager
 
     // Convert the Java Object into the JSON String to use as Payload.
     // Serialization
-    public String createPayloadBookingAsString()
-    {
+    public String createPayloadBookingAsString(){
+
         Booking booking = new Booking();
-        booking.setFirstname("Amol");
-        booking.setLastname("Tarapure");
+        booking.setFirstname("Lucky");
+        booking.setLastname("Dutta");
         booking.setTotalprice(112);
         booking.setDepositpaid(true);
 
         BookingDates bookingdates = new BookingDates();
-        bookingdates.setCheckin("2025-09-01");
-        bookingdates.setCheckout("2025-09-05");
+        bookingdates.setCheckin("2024-02-01");
+        bookingdates.setCheckout("2024-02-05");
         booking.setBookingdates(bookingdates);
         booking.setAdditionalneeds("Breakfast");
 
         System.out.println(booking);
+        gson = new Gson();
         return gson.toJson(booking);
 
 //        {
@@ -105,5 +109,48 @@ public class PayloadManager
         BookingResponse bookingResponse = gson.fromJson(responseString, BookingResponse.class);
         return bookingResponse;
     }
+
+    public Booking getResponseFromJSON(String responseString) {
+        gson = new Gson();
+        Booking bookingResponse = gson.fromJson(responseString, Booking.class);
+        return bookingResponse;
+    }
+
+    // Serialization or deserialization of an object is not present.
+    // So we need to create.
+
+    // We convert the JSON string to the Java object for auth.
+    // {
+    //    "username" : "admin",
+    //    "password" : "password123"
+    //}
+
+    public String setAuthPayload(){
+        Auth auth = new Auth();
+        auth.setUsername("admin");
+        auth.setPassword("password123");
+        gson = new Gson();
+        String jsonPayloadString = gson.toJson(auth);
+        System.out.println("Payload set to the -> " + jsonPayloadString);
+        return jsonPayloadString;
+
+    }
+
+    // DeSer ( JSON String -> Java Object
+    public String getTokenFromJSON(String tokenResponse){
+        gson = new Gson();
+        TokenResponse tokenResponse1 = gson.fromJson(tokenResponse, TokenResponse.class);
+        return tokenResponse1.getToken();
+    }
+
+
+    // DeSer ( JSON String -> Java Object
+    public String getInvalidResponse(String invalidTokenResponse){
+        gson = new Gson();
+        InvalidTokenResponse tokenResponse1 = gson.fromJson(invalidTokenResponse, InvalidTokenResponse.class);
+        return  tokenResponse1.getReason();
+    }
+
+
 
 }
